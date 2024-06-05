@@ -16,9 +16,9 @@ public class Receta extends PanacheEntity {
 	
 	private String receta;
 	
-	private LocalDate fechaCreacionDate;
+	private LocalDate fechaCreacion;
 	
-	private LocalDate fechaValidezDate;
+	private LocalDate fechaValidez;
 	
 
 }

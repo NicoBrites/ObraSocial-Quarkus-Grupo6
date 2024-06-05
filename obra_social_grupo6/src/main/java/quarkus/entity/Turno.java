@@ -16,7 +16,7 @@ public class Turno extends PanacheEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "paciente_id")
-	Paciente paciente;  
+	private Paciente paciente;  
 	
 	@ManyToOne
 	@JoinColumn(name = "especialista_id")
@@ -26,7 +26,7 @@ public class Turno extends PanacheEntity {
 	
 	private LocalTime hora;
 	
-	private String motivoConsultaString;
+	private String motivoConsulta;
 	
 	private Boolean estado;
 }
