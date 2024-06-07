@@ -7,11 +7,15 @@ import io.quarkus.security.jpa.UserDefinition;
 import io.quarkus.security.jpa.Username;
 import jakarta.persistence.Entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.OneToMany;
+import lombok.*;
 
-@Getter @Setter @Entity @UserDefinition 
-public class Paciente extends PanacheEntity {
+import java.util.List;
+
+@Getter @Setter @Entity @UserDefinition @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Usuario extends PanacheEntity {
 	
 	@Username 
 	private String username;
@@ -19,7 +23,11 @@ public class Paciente extends PanacheEntity {
 	private String password;
 	private Integer numeroAfiliado;
     private String nombre;
+	private String apellido;
     private String direccion;
+
+	@OneToMany(mappedBy = "paciente")
+	private List<Turno> turnos;
     @Roles
     private String rol;
     
