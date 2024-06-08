@@ -1,16 +1,16 @@
 package quarkus.dto.mapper;
 
 import jakarta.enterprise.context.RequestScoped;
-import quarkus.dto.CartillaDto;
+import quarkus.dto.EspecialistaDto;
 import quarkus.entity.Especialista;
 
 @RequestScoped
 public class EspecialistaMapper implements IEspecialistaMapper {
 
 	@Override
-	public CartillaDto CartillaMap(Especialista especialista) {
+	public EspecialistaDto EntityToDto(Especialista especialista) {
 			
-		return new CartillaDto(especialista.getNombre(),
+		return new EspecialistaDto(especialista.getNombre(),
 				especialista.getEspecialidad(),
 				especialista.getHorarioEntrada(),
 				especialista.getHorarioSalida(),

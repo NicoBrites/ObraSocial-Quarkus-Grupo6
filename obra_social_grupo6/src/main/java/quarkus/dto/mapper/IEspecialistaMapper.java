@@ -1,9 +1,9 @@
 package quarkus.dto.mapper;
 
-import quarkus.dto.CartillaDto;
+import quarkus.dto.EspecialistaDto;
 import quarkus.entity.Especialista;
 
 public interface IEspecialistaMapper {
 
-	CartillaDto CartillaMap(Especialista especialista);
+	EspecialistaDto EntityToDto(Especialista especialista);
 }

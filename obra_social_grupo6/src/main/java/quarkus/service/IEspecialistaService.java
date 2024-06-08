@@ -2,9 +2,9 @@ package quarkus.service;
 
 import java.util.List;
 
-import quarkus.dto.CartillaDto;
+import quarkus.dto.EspecialistaDto;
 
 public interface IEspecialistaService {
 	
-	List<CartillaDto> getCartilla();
+	List<EspecialistaDto> getCartilla();
 }

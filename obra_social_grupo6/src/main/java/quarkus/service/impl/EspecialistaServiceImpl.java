@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import quarkus.dto.CartillaDto;
+import quarkus.dto.EspecialistaDto;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.repository.EspecialistaRepository;
 import quarkus.service.IEspecialistaService;
@@ -19,9 +19,9 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
     private EspecialistaMapper especialistaMapper;
 
 	@Override
-	public List<CartillaDto> getCartilla() {
+	public List<EspecialistaDto> getCartilla() {
 		return especialistaRepository.findAll().stream()
-				.map(especialistaMapper::CartillaMap)
+				.map(especialistaMapper::EntityToDto)
 				.collect(Collectors.toList());			
 	}
 
