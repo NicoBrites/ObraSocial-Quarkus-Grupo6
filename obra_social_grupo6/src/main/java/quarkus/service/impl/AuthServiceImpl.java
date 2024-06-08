@@ -40,7 +40,6 @@ public class AuthServiceImpl implements AuthService {
         return newUser;
     }
 
-    //TODO cambiar los runtimeException por WebApplicationException
     @Override
     public String generateJwt(String username) {
         var user = usuarioService.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
