@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import quarkus.dto.LoginRequest;
 import quarkus.dto.RegisterRequest;
 import quarkus.entity.Usuario;
+import quarkus.exception.IncorrectUsernameOrPasswordException;
+import quarkus.exception.UserNotFoundException;
+import quarkus.exception.UsernameAlreadyExistsException;
 import quarkus.service.AuthService;
 import quarkus.service.UsuarioService;
 
@@ -22,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Usuario register(RegisterRequest RegisterRequest) {
         if (userExiste(RegisterRequest.username())) {
-            throw new RuntimeException("Usuario ya esta registrado");
+            throw new UsernameAlreadyExistsException();
         }
         var newUser = Usuario.builder()
                 .username(RegisterRequest.username())
@@ -40,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
     //TODO cambiar los runtimeException por WebApplicationException
     @Override
     public String generateJwt(String username) {
-        var user = usuarioService.findByUsername(username).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        var user = usuarioService.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
         return Jwt.issuer("backend-obra-social-grupo-6")
                 .upn(user.getUsername())
                 .groups(user.getRol())
@@ -53,8 +56,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String authenticate(LoginRequest loginRequest) {
-        Usuario user = usuarioService.findByUsername(loginRequest.username()).orElseThrow(() -> new RuntimeException("Usuario o contrasenia incorrectos"));
-        if (!BcryptUtil.matches(loginRequest.password(), user.getPassword())) throw new RuntimeException("Usuario o contrasenia incorrectos");
+        Usuario user = usuarioService.findByUsername(loginRequest.username()).orElseThrow(IncorrectUsernameOrPasswordException::new);
+        if (!BcryptUtil.matches(loginRequest.password(), user.getPassword())) throw new IncorrectUsernameOrPasswordException();
 
         return generateJwt(loginRequest.username());
     }
