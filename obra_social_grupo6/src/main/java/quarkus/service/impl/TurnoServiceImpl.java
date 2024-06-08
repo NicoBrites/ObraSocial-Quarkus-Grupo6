@@ -1,5 +1,6 @@
 package quarkus.service.impl;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import quarkus.dto.TurnoDto;
@@ -15,6 +16,7 @@ import quarkus.service.IUsuarioService;
 
 import java.util.List;
 
+@ApplicationScoped
 public class TurnoServiceImpl implements ITurnoService {
 
     @Inject
