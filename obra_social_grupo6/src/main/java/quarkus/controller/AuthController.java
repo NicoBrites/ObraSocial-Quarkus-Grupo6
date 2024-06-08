@@ -7,6 +7,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestResponse;
 import quarkus.dto.LoginRequest;
 import quarkus.dto.RegisterRequest;
 import quarkus.service.AuthService;
@@ -22,14 +23,8 @@ public class AuthController {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response register (RegisterRequest registerRequest){
-        try {
             authService.register(registerRequest);
-            return Response.status(Response.Status.CREATED).build();
-        } catch (RuntimeException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Error creating user: " + e.getMessage())
-                    .build();
-        }
+            return Response.status(Response.Status.CREATED).entity("Usuario creado correctamente").build();
     }
 
     @POST
