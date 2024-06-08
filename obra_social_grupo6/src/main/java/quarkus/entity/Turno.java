@@ -15,8 +15,8 @@ import lombok.Setter;
 public class Turno extends PanacheEntity {
 	
 	@ManyToOne
-	@JoinColumn(name = "paciente_id")
-	private Paciente paciente;  
+	@JoinColumn(name = "usuario_id")
+	private Usuario paciente;
 	
 	@ManyToOne
 	@JoinColumn(name = "especialista_id")
