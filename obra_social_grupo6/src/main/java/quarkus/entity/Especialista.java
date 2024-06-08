@@ -9,10 +9,11 @@ import lombok.Setter;
 
 @Getter @Setter @Entity
 public class Especialista extends PanacheEntity {
-
+	
+	private String nombre;
 	private String especialidad;	
 	private LocalTime horarioEntrada;	
 	private LocalTime horarioSalida;	
 	private Ubicacion ubicacion;
-	
+
 }
