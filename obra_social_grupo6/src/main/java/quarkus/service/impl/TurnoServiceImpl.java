@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.SecurityContext;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 import quarkus.dto.TurnoDto;
 import quarkus.dto.TurnoRequest;
 import quarkus.dto.mapper.TurnoMapper;
@@ -35,7 +36,8 @@ public class TurnoServiceImpl implements ITurnoService {
     private TurnoRepository turnoRepository;
 
     @Inject
-    private SecurityIdentity securityIdentity;
+    private JsonWebToken jwt;
+
 
 
 
@@ -90,11 +92,11 @@ public class TurnoServiceImpl implements ITurnoService {
 
     void ValidarUsuarioEstaAutorizado(Usuario paciente) {
         if(paciente.getRol().equals("ADMIN")) return;
-        var s = securityIdentity.getPrincipal().getName();
-        if(!Objects.equals(paciente.getUsername(), securityIdentity.getPrincipal().getName())){
+        if(!paciente.getUsername().equals(jwt.getClaim("upn").toString())){
             throw new UnauthorizedException("No tenes permisos para esta accion");
         }
     }
+
 
 
     @Override
@@ -103,6 +105,7 @@ public class TurnoServiceImpl implements ITurnoService {
 
         var paciente = usuarioService.findById(turnoRequest.pacienteId())
                 .orElseThrow(() -> new UserNotFoundException("Paciente no encontrado"));
+
 
         ValidarUsuarioEstaAutorizado(paciente);
 
@@ -124,6 +127,7 @@ public class TurnoServiceImpl implements ITurnoService {
 
 
 
+
     @Override
     public List<TurnoDto> getAllByUserId(Long id) {
 
@@ -139,6 +143,10 @@ public class TurnoServiceImpl implements ITurnoService {
     @Override
     @Transactional
     public void deleteTurno(Long id) {
+        var paciente = usuarioService.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Paciente no encontrado"));
+
+        ValidarUsuarioEstaAutorizado(paciente);
         var turno =  turnoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new TurnoException("No se encontro el turno"));
         turnoRepository.delete(turno);

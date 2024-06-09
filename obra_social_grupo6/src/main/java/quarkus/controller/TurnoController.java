@@ -38,9 +38,10 @@ public class TurnoController {
     @GET
     @Produces("application/json")
     @Path("/{id}")
-    @RolesAllowed("PACIENTE")
+    @RolesAllowed({"PACIENTE","ADMIN"})
     public Response getTurnosByUsername(@PathParam("id") Long id) {
         return Response.status(200).entity(turnoService.getAllByUserId(id)).build();
     }
+
 
 }
