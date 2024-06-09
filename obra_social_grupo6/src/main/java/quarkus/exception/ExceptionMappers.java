@@ -18,9 +18,14 @@ public class ExceptionMappers {
     public Response handleIncorrectUsernameOrPassword(IncorrectUsernameOrPasswordException incorrectUsernameOrPasswordException) {
         return Response.status(Response.Status.UNAUTHORIZED).entity(incorrectUsernameOrPasswordException.getMessage()).build();
     }
+
+    @ServerExceptionMapper
+    public Response handleTurnoException(TurnoException turnoException) {
+        return Response.status(Response.Status.BAD_REQUEST).entity(turnoException.getMessage()).build();
+    }
     @ServerExceptionMapper
     public Response handleRecetaException(RecetaException recetaException) {
         return Response.status(Response.Status.UNAUTHORIZED).entity(recetaException.getMessage()).build();
     }
-
 }
+
