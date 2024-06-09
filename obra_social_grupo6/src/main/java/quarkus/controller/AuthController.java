@@ -12,6 +12,7 @@ import quarkus.dto.RegisterRequest;
 import quarkus.service.IAuthService;
 
 @Path("/auth")
+@Produces(MediaType.TEXT_PLAIN)
 public class AuthController {
 
 
@@ -19,7 +20,7 @@ public class AuthController {
     private IAuthService IAuthService;
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
     public Response register (RegisterRequest registerRequest){
             IAuthService.register(registerRequest);

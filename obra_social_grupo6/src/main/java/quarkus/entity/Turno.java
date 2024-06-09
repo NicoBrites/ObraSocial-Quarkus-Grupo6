@@ -2,6 +2,7 @@ package quarkus.entity;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
@@ -24,10 +25,10 @@ public class Turno extends PanacheEntity {
 	private Especialista especialista;
 	
 	private LocalDate fecha;
-	
+
 	private LocalTime hora;
 	
 	private String motivoConsulta;
 	
-	private Boolean estado = true;
+	private Boolean estado;
 }
