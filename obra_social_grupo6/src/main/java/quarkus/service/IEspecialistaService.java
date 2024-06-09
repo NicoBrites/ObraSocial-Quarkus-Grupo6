@@ -5,6 +5,7 @@ import java.util.Optional;
 
 
 import quarkus.dto.EspecialistaDto;
+import quarkus.dto.EspecialistaRequest;
 import quarkus.entity.Especialista;
 
 public interface IEspecialistaService {
@@ -14,4 +15,7 @@ public interface IEspecialistaService {
 	Optional<Especialista> getByID(Long id);
 
 	void delete(Long id);
+
+	EspecialistaDto save(EspecialistaRequest especialista);
+
 }

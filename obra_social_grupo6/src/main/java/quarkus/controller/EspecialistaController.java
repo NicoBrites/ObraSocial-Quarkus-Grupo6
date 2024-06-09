@@ -10,11 +10,14 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import quarkus.dto.EspecialistaDto;
+import quarkus.dto.EspecialistaRequest;
 import quarkus.entity.Especialista;
 import quarkus.service.IEspecialistaService;
 
@@ -30,12 +33,12 @@ public class EspecialistaController {
 	@GET	
 	@Produces(MediaType.APPLICATION_JSON)
 	@APIResponses(
-	            value = {
-	                    @APIResponse(
-	                            responseCode = "200",
-	                            description = "Trae la cartilla de medicos",
-	                            content = @Content(mediaType = "application/json",
-	                            schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class)))
+		value = {
+			@APIResponse(
+				responseCode = "200",
+				description = "Trae la cartilla de medicos",
+				content = @Content(mediaType = "application/json",
+				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class)))
 	            }
 	    )
 	public Response get() {
@@ -60,6 +63,26 @@ public class EspecialistaController {
     )
 	public Response delete(@PathParam("id") Long id){
 		especialistaServiceImpl.delete(id);
-		return Response.ok(200).build();
+		return Response.ok().build();
+	}
+
+	@RolesAllowed("ADMIN")
+	@POST
+	@Produces("application/json")
+	@APIResponses(
+		value = {
+			@APIResponse(
+				responseCode = "200",
+				description = "Crea un especialista",
+				content = @Content(mediaType = "application/json",
+				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),	            
+            @APIResponse(
+                responseCode = "500",
+                description = "Error interno del servidor")
+		}
+    )
+	public Response save(EspecialistaRequest especialistaRequest){
+		EspecialistaDto especialistaDTO = especialistaServiceImpl.save(especialistaRequest);
+		return Response.ok(especialistaDTO).build();
 	}
 }

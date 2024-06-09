@@ -1,10 +1,8 @@
 package quarkus.service.impl;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import io.smallrye.jwt.build.Jwt;
 
 import java.util.Optional;
 
@@ -12,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import quarkus.dto.EspecialistaDto;
+import quarkus.dto.EspecialistaRequest;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
 import quarkus.exception.UserNotFoundException;
@@ -50,5 +49,14 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
         entity.setEstaBorrado(true);
         especialistaRepository.persist(entity);     
     }
+
+    @Override
+    @Transactional
+    public EspecialistaDto save(EspecialistaRequest especialistaRequest) {
+        Especialista entity = especialistaMapper.RequestToEntity(especialistaRequest);
+        especialistaRepository.persist(entity);
+        return especialistaMapper.EntityToDto(entity);
+    }
+	
 
 }
