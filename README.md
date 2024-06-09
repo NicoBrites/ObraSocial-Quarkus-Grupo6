@@ -5,13 +5,13 @@ Este proyecto, por el momento, consiste en una API RESTful desarrollada con Java
 
 El grupo se haya conformado por:
 * [Nicolas Brites](https://github.com/NicoBrites)
-* [Federico Acosta]((https://github.com/fede-acos))
-* [David Bernhardt]((https://github.com/DavidBernhardt))
+* [Federico Acosta](https://github.com/fede-acos)
+* [David Bernhardt](https://github.com/DavidBernhardt)
 
 ## Funcionalidades  
 * **Autentificación y autorización**: Autoriza al usuario a acceder a las funcionalidades de la API, verificando sus credenciales (usuario y contraseña), y asignando un token de acceso.
 - **Gestión de Turnos**: Permite crear, leer, actualizar y eliminar turnos médicos.
-- **Cartilla de Especialistas**: Ofrece una vista de los especialistas con sus horarios, ubicación y áreas de especialización[^1^][1].
+- **Cartilla de Especialistas**: Ofrece una vista de los especialistas con sus horarios, ubicación y áreas de especialización.
 - **Descarga de recetas**: Los usuarios autorizados pueden acceder a sus recetas medicas.
 
 ## Dependencias
@@ -22,11 +22,11 @@ Para ejecutar este proyecto, necesitarás las siguientes dependencias:
 - SmallRye OpenAPI ([guia](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
 - REST Jackson ([guia](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
 - SmallRye JWT ([guia](https://quarkus.io/guides/security-jwt)): Secure your applications with JSON Web Token
-- JDBC Driver - MySQL ([guide](https://quarkus.io/guides/datasource)): Connect to the MySQL database via JDBC
-- SmallRye JWT Build ([guide](https://quarkus.io/guides/security-jwt-build)): Create JSON Web Token with SmallRye JWT Build API
+- JDBC Driver - MySQL ([guia](https://quarkus.io/guides/datasource)): Connect to the MySQL database via JDBC
+- SmallRye JWT Build ([guia](https://quarkus.io/guides/security-jwt-build)): Create JSON Web Token with SmallRye JWT Build API
 
 ## Instalación y Ejecución
-1. Instalar [Docker]([Get Started | Docker](https://www.docker.com/get-started/)) y [Quarkus CLI]([Building Quarkus apps with Quarkus Command Line Interface (CLI) - Quarkus](https://es.quarkus.io/guides/cli-tooling))
+1. Instalar ([Docker](https://www.docker.com/get-started/)) y ([Quarkus CLI](https://es.quarkus.io/guides/cli-tooling))
 2. Clona el repositorio
 3. Iniciar Docker
 4. Desde el directorio del repositorio, ejecuta el comando `quarkus dev`
