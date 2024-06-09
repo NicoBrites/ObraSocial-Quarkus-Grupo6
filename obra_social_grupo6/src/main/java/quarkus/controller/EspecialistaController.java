@@ -20,7 +20,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 import quarkus.dto.EspecialistaDto;
 import quarkus.dto.EspecialistaRequest;
-import quarkus.entity.Especialista;
 import quarkus.service.IEspecialistaService;
 
 
@@ -31,8 +30,9 @@ public class EspecialistaController {
 	@Inject
 	private IEspecialistaService especialistaServiceImpl;
 
-	@RolesAllowed("PACIENTE")
-	@GET	
+	
+	@GET
+	@RolesAllowed({"PACIENTE","ADMIN"})	
 	@Produces("application/json")
 	@APIResponses(
 		value = {
@@ -40,7 +40,7 @@ public class EspecialistaController {
 				responseCode = "200",
 				description = "Trae la cartilla de medicos",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),
+				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),
 			@APIResponse(
 				responseCode = "500",
 				description = "Error interno del servidor")
@@ -81,7 +81,7 @@ public class EspecialistaController {
 				responseCode = "201",
 				description = "Crea un especialista",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),	
+				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),	
 			@APIResponse(
 				responseCode = "400",
 				description = "Error: Bad Request"),            
@@ -91,8 +91,9 @@ public class EspecialistaController {
 		}
     )
 	public Response save(@Valid EspecialistaRequest especialistaRequest){
-		EspecialistaDto especialistaDTO = especialistaServiceImpl.save(especialistaRequest);
-		return Response.status(Response.Status.CREATED).entity(especialistaDTO).build();
+ 
+		return Response.status(Response.Status.CREATED)
+			.entity(especialistaServiceImpl.save(especialistaRequest)).build();
 	}
 
 	@RolesAllowed("ADMIN")
@@ -106,7 +107,7 @@ public class EspecialistaController {
 				responseCode = "201",
 				description = "Modifica un especialista",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),	
+				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),	
 			@APIResponse(
 				responseCode = "400",
 				description = "Error: Bad Request"), 
@@ -119,7 +120,8 @@ public class EspecialistaController {
 		}
     )
 	public Response update(@Valid EspecialistaDto especialistaRequest, @PathParam("id") Long id){
-		EspecialistaDto especialistaDTO = especialistaServiceImpl.update(especialistaRequest, id);
-		return Response.status(Response.Status.CREATED).entity(especialistaDTO).build();
+
+		return Response.status(Response.Status.CREATED)
+			.entity(especialistaServiceImpl.update(especialistaRequest, id)).build();
 	}
 }
