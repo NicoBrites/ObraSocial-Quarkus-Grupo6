@@ -34,10 +34,11 @@ public class RecetaServiceImpl  implements IRecetaService{
             throw new UserNotFoundException("Turno no encontrado");
         }
         Turno entity = turnoOpcional.get(); 
-        if (entity.getPaciente().getUsername() != jwt.getName())  {
+
+        if (!entity.getPaciente().getUsername().toString().equals(jwt.getClaim("upn").toString()))  {
             throw new UserNotFoundException("A este Paciente no le corresponde la receta de este Turno");
         }
-        Receta receta = recetaRepository.findByIdTurno(idTurno);
-        return recetaMapper.EntityToDto(receta);
+        Optional<Receta> recetaOpcion = recetaRepository.findByIdTurno(idTurno);
+        return recetaMapper.EntityToDto(recetaOpcion.get());
     }
 }
