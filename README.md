@@ -5,8 +5,8 @@ Este proyecto, por el momento, consiste en una API RESTful desarrollada con Java
 
 El grupo se haya conformado por:
 * [Nicolas Brites](https://github.com/NicoBrites)
-* [Federico Acosta]([fede-acos (Federico Acosta) (github.com)](https://github.com/fede-acos))
-* [David Bernhardt]([DavidBernhardt (davidbernhardt) (github.com)](https://github.com/DavidBernhardt))
+* [Federico Acosta]((https://github.com/fede-acos))
+* [David Bernhardt]((https://github.com/DavidBernhardt))
 
 ## Funcionalidades  
 * **Autentificación y autorización**: Autoriza al usuario a acceder a las funcionalidades de la API, verificando sus credenciales (usuario y contraseña), y asignando un token de acceso.
