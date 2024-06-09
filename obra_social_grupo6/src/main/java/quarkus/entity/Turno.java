@@ -30,5 +30,5 @@ public class Turno extends PanacheEntity {
 	
 	private String motivoConsulta;
 	
-	private Boolean estado;
+	private Boolean estado = true;
 }
