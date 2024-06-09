@@ -27,10 +27,10 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
 
 	@Override
 	public List<EspecialistaDto> getCartilla() {
-		return especialistaRepository.findAll().stream()
-				.filter(especialista -> !especialista.getEstaBorrado() )
-				.map(especialistaMapper::EntityToDto)
-				.collect(Collectors.toList());			
+        return especialistaRepository.findAll().stream()
+                            .filter(especialista -> !especialista.getEstaBorrado())
+                            .map(especialistaMapper::EntityToDto)
+                            .collect(Collectors.toList());	
 	}
 
 	@Override
@@ -54,9 +54,43 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
     @Transactional
     public EspecialistaDto save(EspecialistaRequest especialistaRequest) {
         Especialista entity = especialistaMapper.RequestToEntity(especialistaRequest);
+        entity.setEstaBorrado(false);
         especialistaRepository.persist(entity);
         return especialistaMapper.EntityToDto(entity);
     }
-	
+
+    @Override
+    @Transactional
+    public EspecialistaDto update(EspecialistaDto especialistaUpdate, Long id) {
+        Optional<Especialista> optional = Especialista.findByIdOptional(id);
+        if (optional.isEmpty()) {
+            throw new UserNotFoundException("Especialista no encontrado");
+        }
+        Especialista entityToUpdate = optional.get(); 
+        if (entityToUpdate.getEstaBorrado()){
+            throw new UserNotFoundException("Especialista no encontrado");
+        }
+        Especialista updatedEntity = especialistaMapper.DtoToEntity(especialistaUpdate);
+
+
+        if (updatedEntity.getNombre() != null) {
+            entityToUpdate.setNombre(updatedEntity.getNombre());
+        }
+        if (updatedEntity.getEspecialidad() != null) {
+            entityToUpdate.setEspecialidad(updatedEntity.getEspecialidad());
+        }
+        if (updatedEntity.getHorarioEntrada() != null) {
+            entityToUpdate.setHorarioEntrada(updatedEntity.getHorarioEntrada());
+        }
+        if (updatedEntity.getHorarioSalida() != null) {
+            entityToUpdate.setHorarioSalida(updatedEntity.getHorarioSalida());
+        }
+        if (updatedEntity.getUbicacion() != null) {
+            entityToUpdate.setUbicacion(updatedEntity.getUbicacion());
+        }
+
+        especialistaRepository.persist(entityToUpdate);
+        return especialistaMapper.EntityToDto(entityToUpdate);
+    }  
 
 }

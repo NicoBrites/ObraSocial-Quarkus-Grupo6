@@ -14,9 +14,9 @@ public record EspecialistaRequest(
     @NotBlank(message="La especialidad no puede estar vacio")
     String especialidad,
     @NotNull(message="La hora de entrada no puede estar vacia")
-    LocalTime horaEntrada,
+    LocalTime horarioEntrada,
     @NotNull(message="La hora de salida no puede estar vacia")
-    LocalTime horaSalida,
+    LocalTime horarioSalida,
     @NotNull(message="La ubicacion no puede estar vacia")
     Ubicacion ubicacion
 

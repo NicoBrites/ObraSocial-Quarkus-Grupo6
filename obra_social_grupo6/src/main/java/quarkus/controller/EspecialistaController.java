@@ -9,13 +9,14 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import quarkus.dto.EspecialistaDto;
 import quarkus.dto.EspecialistaRequest;
@@ -32,14 +33,17 @@ public class EspecialistaController {
 
 	@RolesAllowed("PACIENTE")
 	@GET	
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces("application/json")
 	@APIResponses(
 		value = {
 			@APIResponse(
 				responseCode = "200",
 				description = "Trae la cartilla de medicos",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class)))
+				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),
+			@APIResponse(
+				responseCode = "500",
+				description = "Error interno del servidor")
 	            }
 	    )
 	public Response get() {
@@ -67,9 +71,10 @@ public class EspecialistaController {
 		return Response.ok().build();
 	}
 
-	//@RolesAllowed("ADMIN")
+	@RolesAllowed("ADMIN")
 	@POST
-	@Produces("application/json")
+	@Consumes("application/json")
+    @Produces("application/json")
 	@APIResponses(
 		value = {
 			@APIResponse(
@@ -87,6 +92,34 @@ public class EspecialistaController {
     )
 	public Response save(@Valid EspecialistaRequest especialistaRequest){
 		EspecialistaDto especialistaDTO = especialistaServiceImpl.save(especialistaRequest);
+		return Response.status(Response.Status.CREATED).entity(especialistaDTO).build();
+	}
+
+	@RolesAllowed("ADMIN")
+	@PUT
+	@Path("/{id}")
+	@Consumes("application/json")
+    @Produces("application/json")
+	@APIResponses(
+		value = {
+			@APIResponse(
+				responseCode = "201",
+				description = "Modifica un especialista",
+				content = @Content(mediaType = "application/json",
+				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),	
+			@APIResponse(
+				responseCode = "400",
+				description = "Error: Bad Request"), 
+			@APIResponse(
+                responseCode = "404",
+                description = "Especialista no encontrado"),           
+            @APIResponse(
+                responseCode = "500",
+                description = "Error interno del servidor")
+		}
+    )
+	public Response update(@Valid EspecialistaDto especialistaRequest, @PathParam("id") Long id){
+		EspecialistaDto especialistaDTO = especialistaServiceImpl.update(especialistaRequest, id);
 		return Response.status(Response.Status.CREATED).entity(especialistaDTO).build();
 	}
 }

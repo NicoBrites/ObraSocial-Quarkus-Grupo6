@@ -15,8 +15,7 @@ public class EspecialistaMapper implements IEspecialistaMapper {
 				especialista.getEspecialidad(),
 				especialista.getHorarioEntrada(),
 				especialista.getHorarioSalida(),
-				especialista.getUbicacion(),
-				especialista.getEstaBorrado()); 
+				especialista.getUbicacion()); 
 	}
 	
 	@Override
@@ -24,10 +23,20 @@ public class EspecialistaMapper implements IEspecialistaMapper {
         return Especialista.builder()
 				.nombre(especialistaRequest.nombre())
                 .especialidad(especialistaRequest.especialidad())
-                .horarioEntrada(especialistaRequest.horaEntrada())
-                .horarioSalida(especialistaRequest.horaSalida())
+                .horarioEntrada(especialistaRequest.horarioEntrada())
+                .horarioSalida(especialistaRequest.horarioSalida())
                 .ubicacion(especialistaRequest.ubicacion())
-                .estaBorrado(false)
+                .build();
+    }
+
+	@Override
+	public Especialista DtoToEntity(EspecialistaDto especialistaDto){
+        return Especialista.builder()
+				.nombre(especialistaDto.nombre())
+                .especialidad(especialistaDto.especialidad())
+                .horarioEntrada(especialistaDto.horarioEntrada())
+                .horarioSalida(especialistaDto.horarioSalida())
+                .ubicacion(especialistaDto.ubicacion())
                 .build();
     }
 
