@@ -20,6 +20,12 @@ public class TurnoMapper {
 
 
     public  static TurnoDto EntityToDto (Turno turno) {
-        return new TurnoDto(turno.id,turno.getPaciente().id,turno.getEspecialista().id,turno.getFecha(),turno.getHora(),turno.getMotivoConsulta(),turno.getEstado());
+        return new TurnoDto(turno.id
+                ,turno.getPaciente().id
+                ,turno.getEspecialista().id
+                ,turno.getFecha()
+                ,turno.getHora()
+                ,turno.getMotivoConsulta()
+                ,turno.getEstado());
     }
 }

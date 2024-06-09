@@ -1,5 +1,6 @@
 package quarkus.controller;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -23,8 +24,8 @@ public class TurnoController {
     @PUT
     @Produces("application/json")
     @Path("/{id}")
-    public Response updateTurno(@PathParam("id") Long id , @Valid TurnoDto turnoDto) {
-        return Response.status(200).entity(turnoService.updateTurno(turnoDto,id)).build();
+    public Response updateTurno(@PathParam("id") Long id , @Valid TurnoRequest turnoRequest) {
+        return Response.status(200).entity(turnoService.updateTurno(turnoRequest,id)).build();
     }
 
     @DELETE
@@ -36,9 +37,10 @@ public class TurnoController {
 
     @GET
     @Produces("application/json")
-    @Path("/{username}")
-    public Response getTurnosByUsername(@PathParam("username") String username) {
-        return Response.status(200).entity(turnoService.getAllTurnosByUsername(username)).build();
+    @Path("/{id}")
+    @RolesAllowed("PACIENTE")
+    public Response getTurnosByUsername(@PathParam("id") Long id) {
+        return Response.status(200).entity(turnoService.getAllByUserId(id)).build();
     }
 
 }

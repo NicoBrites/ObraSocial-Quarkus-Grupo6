@@ -1,8 +1,9 @@
 package quarkus.service;
 
-import jakarta.transaction.Transactional;
 import quarkus.dto.TurnoDto;
 import quarkus.dto.TurnoRequest;
+import quarkus.entity.Especialista;
+import quarkus.entity.Usuario;
 
 import java.util.List;
 
@@ -10,8 +11,11 @@ public interface ITurnoService {
 
     TurnoDto createTurno(TurnoRequest Turno);
 
-    TurnoDto updateTurno(TurnoDto turnoDto, Long id);
+    void validarFechaYHora(Especialista especialista, Usuario paciente, TurnoRequest turnoRequest);
 
-    List<TurnoDto> getAllTurnosByUsername(String username);
+    TurnoRequest updateTurno(TurnoRequest TurnoRequest, Long id);
+
+    List<TurnoDto> getAllByUserId(Long id);
+
     void deleteTurno(Long id);
 }
