@@ -1,7 +1,11 @@
 package quarkus.service.impl;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import io.smallrye.jwt.build.Jwt;
+
 import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,6 +14,7 @@ import jakarta.transaction.Transactional;
 import quarkus.dto.EspecialistaDto;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
+import quarkus.exception.UserNotFoundException;
 import quarkus.repository.EspecialistaRepository;
 import quarkus.service.IEspecialistaService;
 
@@ -39,9 +44,9 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
     public void delete(Long id) {		        
         Optional<Especialista> optional = Especialista.findByIdOptional(id);
         if (optional.isEmpty()) {
-            throw new RuntimeException("No existe un Especialista con ese id");
+            throw new UserNotFoundException("Especialista no encontrado");
         }
-        Especialista entity = optional.get();      
+        Especialista entity = optional.get();   
         entity.setEstaBorrado(true);
         especialistaRepository.persist(entity);     
     }

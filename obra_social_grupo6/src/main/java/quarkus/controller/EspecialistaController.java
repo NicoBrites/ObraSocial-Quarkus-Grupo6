@@ -1,5 +1,11 @@
 package quarkus.controller;
 
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.DELETE;
@@ -9,7 +15,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
+import quarkus.entity.Especialista;
 import quarkus.service.IEspecialistaService;
 
 
@@ -23,6 +29,15 @@ public class EspecialistaController {
 	@RolesAllowed("PACIENTE")
 	@GET	
 	@Produces(MediaType.APPLICATION_JSON)
+	@APIResponses(
+	            value = {
+	                    @APIResponse(
+	                            responseCode = "200",
+	                            description = "Trae la cartilla de medicos",
+	                            content = @Content(mediaType = "application/json",
+	                            schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class)))
+	            }
+	    )
 	public Response get() {
 		return Response.ok(especialistaServiceImpl.getCartilla()).build();
 	}
@@ -30,12 +45,21 @@ public class EspecialistaController {
 	@RolesAllowed("ADMIN")
 	@DELETE
 	@Path("/{id}")
+	@APIResponses(
+        value = {
+            @APIResponse(
+                responseCode = "200",
+                description = "El especialista fue borrado"),
+            @APIResponse(
+                responseCode = "404",
+                description = "Especialista no encontrado"),
+            @APIResponse(
+                responseCode = "500",
+                description = "Error interno del servidor")
+        }
+    )
 	public Response delete(@PathParam("id") Long id){
-		try{
 		especialistaServiceImpl.delete(id);
 		return Response.ok(200).build();
-		}catch (Exception e){
-			return Response.status(Response.Status.EXPECTATION_FAILED).entity(e.getMessage()).build();
-		}
 	}
 }
