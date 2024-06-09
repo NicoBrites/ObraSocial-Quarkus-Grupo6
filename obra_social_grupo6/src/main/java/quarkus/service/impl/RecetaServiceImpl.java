@@ -7,7 +7,7 @@ import quarkus.dto.mapper.RecetaMapper;
 import quarkus.entity.Turno;
 import quarkus.entity.Receta;
 import quarkus.exception.RecetaException;
-import quarkus.exception.TurnoException;
+import quarkus.exception.UserNotFoundException;
 import quarkus.repository.RecetaRepository;
 import quarkus.repository.TurnoRepository;
 import quarkus.service.IRecetaService;
@@ -33,12 +33,12 @@ public class RecetaServiceImpl  implements IRecetaService{
 
         Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(idTurno);
         if (turnoOpcional.isEmpty()) {
-            throw new TurnoException("Turno no encontrado");
+            throw new UserNotFoundException("Turno no encontrado");
         }
         Turno entity = turnoOpcional.get(); 
 
         if (!entity.getPaciente().getUsername().toString().equals(jwt.getClaim("upn").toString()))  {
-            throw new RecetaException("A este Paciente no le corresponde la receta de este Turno");
+            throw new RecetaException("El id del turno no pertenece a tu Usuario");
         }
         Optional<Receta> recetaOpcion = recetaRepository.findByIdTurno(idTurno);
 
