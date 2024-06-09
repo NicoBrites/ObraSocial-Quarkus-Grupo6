@@ -5,12 +5,12 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import quarkus.entity.Usuario;
 import quarkus.repository.UsuarioRepository;
-import quarkus.service.UsuarioService;
+import quarkus.service.IUsuarioService;
 
 import java.util.Optional;
 
 @ApplicationScoped
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioServiceImpl implements IUsuarioService {
 
     @Inject
     private UsuarioRepository usuarioRepository;
@@ -19,6 +19,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<Usuario> findByUsername(String username) {
 
         return usuarioRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<Usuario> findById(Long id) {
+        return usuarioRepository.findByIdOptional(id);
     }
 
     @Override

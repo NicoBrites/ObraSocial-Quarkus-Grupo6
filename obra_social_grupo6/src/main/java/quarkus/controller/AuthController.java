@@ -7,23 +7,23 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.jboss.resteasy.reactive.RestResponse;
 import quarkus.dto.LoginRequest;
 import quarkus.dto.RegisterRequest;
-import quarkus.service.AuthService;
+import quarkus.service.IAuthService;
 
-@Path("api/v1/auth")
+@Path("/auth")
+@Produces(MediaType.TEXT_PLAIN)
 public class AuthController {
 
 
     @Inject
-    private AuthService authService;
+    private IAuthService IAuthService;
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
     public Response register (RegisterRequest registerRequest){
-            authService.register(registerRequest);
+            IAuthService.register(registerRequest);
             return Response.status(Response.Status.CREATED).entity("Usuario creado correctamente").build();
     }
 
@@ -32,7 +32,7 @@ public class AuthController {
     @Produces(MediaType.TEXT_PLAIN)
     @PermitAll
     public Response login(LoginRequest loginRequest){
-        var token = authService.authenticate(loginRequest);
+        var token = IAuthService.authenticate(loginRequest);
         return Response.ok(token).build();
     }
 

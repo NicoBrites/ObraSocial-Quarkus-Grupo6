@@ -9,7 +9,7 @@ import java.util.List;
 @ApplicationScoped
 public class TurnoRepository implements PanacheRepository<Turno> {
 
-    public List<Turno> findAllByUsername(String username) {
-        return find("paciente.username", username).list();
+    public List<Turno> findAllByUserId(Long id) {
+        return find("paciente.id", id).list();
     }
 }
