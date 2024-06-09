@@ -3,5 +3,5 @@ import quarkus.dto.RecetaDto;
 
 public interface IRecetaService {
 
-    RecetaDto getReceta();
+    RecetaDto getReceta(Long idTurno, String authorizationHeader);
 }

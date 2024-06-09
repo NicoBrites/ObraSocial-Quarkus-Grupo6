@@ -1,12 +1,11 @@
 package quarkus.dto.mapper;
 
-import java.time.LocalDate;
 
-import quarkus.dto.EspecialistaDto;
+import jakarta.enterprise.context.RequestScoped;
 import quarkus.dto.RecetaDto;
-import quarkus.entity.Especialista;
 import quarkus.entity.Receta;
 
+@RequestScoped
 public class RecetaMapper {
 
     public RecetaDto EntityToDto(Receta receta) {
