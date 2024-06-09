@@ -4,14 +4,16 @@ import java.time.LocalDate;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @Entity
+@Getter @Setter @Entity 
 public class Receta extends PanacheEntity {
 	
 	@OneToOne
+	@JoinColumn(name = "turno_id")
 	private Turno turno;  
 	
 	private String receta;
