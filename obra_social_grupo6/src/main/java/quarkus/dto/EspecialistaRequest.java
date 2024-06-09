@@ -2,21 +2,22 @@ package quarkus.dto;
 
 import java.time.LocalTime;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import quarkus.entity.Ubicacion;
 
 public record EspecialistaRequest( 
     
-    @NotNull
+    @Size(min = 1, max = 40, message = "El nombre debe tener entre 1 y 40 caracteres")
     String nombre,
-    @NotNull
+    @NotBlank(message="La especialidad no puede estar vacio")
     String especialidad,
-    @NotNull
+    @NotNull(message="La hora de entrada no puede estar vacia")
     LocalTime horaEntrada,
-    @NotNull
+    @NotNull(message="La hora de salida no puede estar vacia")
     LocalTime horaSalida,
-    @NotEmpty
+    @NotNull(message="La ubicacion no puede estar vacia")
     Ubicacion ubicacion
 
     ) {

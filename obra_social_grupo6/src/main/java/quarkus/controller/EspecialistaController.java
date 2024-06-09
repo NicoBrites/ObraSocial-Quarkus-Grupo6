@@ -8,6 +8,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -66,23 +67,26 @@ public class EspecialistaController {
 		return Response.ok().build();
 	}
 
-	@RolesAllowed("ADMIN")
+	//@RolesAllowed("ADMIN")
 	@POST
 	@Produces("application/json")
 	@APIResponses(
 		value = {
 			@APIResponse(
-				responseCode = "200",
+				responseCode = "201",
 				description = "Crea un especialista",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),	            
+				schema = @Schema(type = SchemaType.ARRAY, implementation = Especialista.class))),	
+			@APIResponse(
+				responseCode = "400",
+				description = "Error: Bad Request"),            
             @APIResponse(
                 responseCode = "500",
                 description = "Error interno del servidor")
 		}
     )
-	public Response save(EspecialistaRequest especialistaRequest){
+	public Response save(@Valid EspecialistaRequest especialistaRequest){
 		EspecialistaDto especialistaDTO = especialistaServiceImpl.save(especialistaRequest);
-		return Response.ok(especialistaDTO).build();
+		return Response.status(Response.Status.CREATED).entity(especialistaDTO).build();
 	}
 }
