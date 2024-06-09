@@ -9,7 +9,8 @@ public record EspecialistaDto(
 	String especialidad,
 	LocalTime horarioEntrada,
 	LocalTime horarioSalida,
-	Ubicacion ubicacion
+	Ubicacion ubicacion,
+	Boolean estaBorrado
 ) {
     
 }

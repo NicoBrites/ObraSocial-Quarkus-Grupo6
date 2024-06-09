@@ -14,7 +14,8 @@ public class EspecialistaMapper implements IEspecialistaMapper {
 				especialista.getEspecialidad(),
 				especialista.getHorarioEntrada(),
 				especialista.getHorarioSalida(),
-				especialista.getUbicacion()); 
+				especialista.getUbicacion(),
+				especialista.getEstaBorrado()); 
 	}
 
 }

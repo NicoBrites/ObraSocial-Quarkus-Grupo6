@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import quarkus.dto.EspecialistaDto;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
@@ -23,6 +24,7 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
 	@Override
 	public List<EspecialistaDto> getCartilla() {
 		return especialistaRepository.findAll().stream()
+				.filter(especialista -> !especialista.getEstaBorrado() )
 				.map(especialistaMapper::EntityToDto)
 				.collect(Collectors.toList());			
 	}
@@ -31,5 +33,17 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
 	public Optional<Especialista> getByID(Long especialistaId) {
         return especialistaRepository.findByIdOptional(especialistaId);
     }	
+
+	@Override
+	@Transactional
+    public void delete(Long id) {		        
+        Optional<Especialista> optional = Especialista.findByIdOptional(id);
+        if (optional.isEmpty()) {
+            throw new RuntimeException("No existe un Especialista con ese id");
+        }
+        Especialista entity = optional.get();      
+        entity.setEstaBorrado(true);
+        especialistaRepository.persist(entity);     
+    }
 
 }

@@ -15,5 +15,6 @@ public class Especialista extends PanacheEntity {
 	private LocalTime horarioEntrada;	
 	private LocalTime horarioSalida;	
 	private Ubicacion ubicacion;
+	private Boolean estaBorrado;
 
 }
