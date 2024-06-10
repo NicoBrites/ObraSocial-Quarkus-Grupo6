@@ -34,3 +34,6 @@ Para ejecutar este proyecto, necesitarás las siguientes dependencias:
 
 ## Endpoints (Vista de SwaggerUI): 
 ![Endpoints y responses](https://i.imgur.com/FbVWM5b.png)
+
+## Diagrama de clases
+![Diagrama de clases](https://i.imgur.com/3EIlRDY.png)
