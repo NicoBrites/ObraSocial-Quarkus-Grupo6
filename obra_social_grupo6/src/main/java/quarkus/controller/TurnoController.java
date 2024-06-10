@@ -17,6 +17,7 @@ public class TurnoController {
 
     @POST
     @Produces("application/json")
+    @RolesAllowed({"PACIENTE","ADMIN"})
     public Response createTurno(@Valid TurnoRequest turnoRequest) {
         return Response.status(201).entity(turnoService.createTurno(turnoRequest)).build();
     }
@@ -24,12 +25,14 @@ public class TurnoController {
     @PUT
     @Produces("application/json")
     @Path("/{id}")
+    @RolesAllowed({"PACIENTE","ADMIN"})
     public Response updateTurno(@PathParam("id") Long id , @Valid TurnoRequest turnoRequest) {
         return Response.status(200).entity(turnoService.updateTurno(turnoRequest,id)).build();
     }
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed({"PACIENTE","ADMIN"})
     public Response deleteTurno(@PathParam("id") Long id) {
         turnoService.deleteTurno(id);
         return Response.status(200).build();
