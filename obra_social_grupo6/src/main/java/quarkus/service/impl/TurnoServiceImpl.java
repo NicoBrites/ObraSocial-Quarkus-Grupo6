@@ -103,20 +103,18 @@ public class TurnoServiceImpl implements ITurnoService {
     @Transactional
     public TurnoRequest updateTurno(TurnoRequest turnoRequest, Long id) {
 
-        var paciente = usuarioService.findById(turnoRequest.pacienteId())
-                .orElseThrow(() -> new UserNotFoundException("Paciente no encontrado"));
-
-
-        ValidarUsuarioEstaAutorizado(paciente);
 
         var turno = turnoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new TurnoException("No se encontro el turno"));
+
+        ValidarUsuarioEstaAutorizado(turno.getPaciente());
+
 
         Especialista especialista = especialistaService.getByID(turnoRequest.especialistaId())
                 .orElseThrow( ()-> new UserNotFoundException("No se encontro especialista"));
 
 
-        validarFechaYHora(especialista,paciente,turnoRequest);
+        validarFechaYHora(especialista,turno.getPaciente(),turnoRequest);
         turno.setFecha(turnoRequest.fecha());
         turno.setHora(turnoRequest.hora());
         turno.setMotivoConsulta(turnoRequest.motivoConsulta());
@@ -143,12 +141,11 @@ public class TurnoServiceImpl implements ITurnoService {
     @Override
     @Transactional
     public void deleteTurno(Long id) {
-        var paciente = usuarioService.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("Paciente no encontrado"));
 
-        ValidarUsuarioEstaAutorizado(paciente);
         var turno =  turnoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new TurnoException("No se encontro el turno"));
+
+        ValidarUsuarioEstaAutorizado(turno.getPaciente());
         turnoRepository.delete(turno);
     }
 }

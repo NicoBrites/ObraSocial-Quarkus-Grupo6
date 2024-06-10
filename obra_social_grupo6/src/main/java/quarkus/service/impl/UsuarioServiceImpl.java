@@ -17,7 +17,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public Optional<Usuario> findByUsername(String username) {
-
         return usuarioRepository.findByUsername(username);
     }
 
