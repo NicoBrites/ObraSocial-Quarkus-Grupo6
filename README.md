@@ -30,4 +30,7 @@ Para ejecutar este proyecto, necesitarás las siguientes dependencias:
 2. Clona el repositorio
 3. Iniciar Docker
 4. Desde el directorio del repositorio, ejecuta el comando `quarkus dev`
-5. Ya podremos acceder a la API, inicializada localmente (por defecto en `localhost:8080`). 
+5. Ya podremos acceder a la API, inicializada localmente (por defecto en `localhost:8080`).
+
+## Endpoints (Vista de SwaggerUI): 
+![Endpoints y responses](https://i.imgur.com/FbVWM5b.png)
