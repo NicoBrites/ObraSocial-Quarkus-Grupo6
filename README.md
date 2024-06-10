@@ -37,3 +37,6 @@ Para ejecutar este proyecto, necesitarás las siguientes dependencias:
 
 ## Diagrama de clases
 ![Diagrama de clases](https://i.imgur.com/3EIlRDY.png)
+
+## Diagrama Entidad Relacion generado
+![Diagrama ER generado](https://i.imgur.com/wK0kyS3.png)
