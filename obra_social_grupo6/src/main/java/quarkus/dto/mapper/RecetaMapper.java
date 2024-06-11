@@ -1,9 +1,11 @@
 package quarkus.dto.mapper;
 
+import java.time.LocalDate;
 
 import jakarta.enterprise.context.RequestScoped;
 import quarkus.dto.RecetaDto;
 import quarkus.entity.Receta;
+import quarkus.entity.Turno;
 
 @RequestScoped
 public class RecetaMapper {
@@ -16,5 +18,14 @@ public class RecetaMapper {
 				receta.getReceta(),
 				receta.getFechaCreacion()); 
 	}
+
+	public Receta DtoToEntity(RecetaDto recetaDto, Turno turno, LocalDate fechaValidez) {
+		 return Receta.builder()
+				.turno(turno)
+				.receta(recetaDto.receta())
+				.fechaCreacion(recetaDto.fechaCreacion())
+				.fechaValidez(fechaValidez)
+				.build();
+    }
 
 }
