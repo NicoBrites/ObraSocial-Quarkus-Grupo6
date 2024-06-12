@@ -8,6 +8,7 @@ import quarkus.dto.RecetaDto;
 import quarkus.dto.RecetaRequest;
 import quarkus.dto.mapper.RecetaMapper;
 import quarkus.entity.Turno;
+import quarkus.entity.Especialista;
 import quarkus.entity.Receta;
 import quarkus.exception.RecetaException;
 import quarkus.exception.UserNotFoundException;
@@ -70,8 +71,21 @@ public class RecetaServiceImpl  implements IRecetaService{
         LocalDate fechaValidez = fechaCreacion.plusDays(30);
 
         Receta entityReceta = recetaMapper.RequestToEntity(recetaRequest, entityTurno, fechaCreacion, fechaValidez);
-
+        entityReceta.setEstaBorrado(false);
+        
         recetaRepository.persist(entityReceta);
         return recetaMapper.EntityToDto(entityReceta);
+    }
+
+    @Override
+	@Transactional
+    public void delete(Long id) {		        
+        Optional<Receta> optional = Receta.findByIdOptional(id);
+        if (optional.isEmpty()) {
+            throw new RecetaException("Receta no encontrada");
+        }
+        Receta entity = optional.get();   
+        entity.setEstaBorrado(true);
+        recetaRepository.persist(entity);     
     }
 }

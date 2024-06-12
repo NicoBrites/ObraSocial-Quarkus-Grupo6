@@ -20,11 +20,9 @@ public class Receta extends PanacheEntity {
 	@OneToOne
 	@JoinColumn(name = "turno_id")
 	private Turno turno;  
-	
 	private String receta;
-	
 	private LocalDate fechaCreacion;
-	
 	private LocalDate fechaValidez;
+	private Boolean estaBorrado;
 	
 }

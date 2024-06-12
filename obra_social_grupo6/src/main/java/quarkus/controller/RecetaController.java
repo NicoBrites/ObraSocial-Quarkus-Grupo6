@@ -9,6 +9,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -77,5 +78,26 @@ public class RecetaController {
 	public Response save(@Valid RecetaRequest recetaRequest){
 		return Response.status(Response.Status.CREATED)
 			.entity(recetaServiceImpl.save(recetaRequest)).build();
+	}
+
+	@RolesAllowed("ADMIN")
+	@DELETE
+	@Path("/{id}")
+	@APIResponses(
+        value = {
+            @APIResponse(
+                responseCode = "200",
+                description = "La receta fue borrada"),
+            @APIResponse(
+                responseCode = "404",
+                description = "Receta no encontrada"),
+            @APIResponse(
+                responseCode = "500",
+                description = "Error interno del servidor")
+        }
+    )
+	public Response delete(@PathParam("id") Long id){
+		recetaServiceImpl.delete(id);
+		return Response.ok().build();
 	}
 }

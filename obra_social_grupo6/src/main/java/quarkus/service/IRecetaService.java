@@ -7,4 +7,6 @@ public interface IRecetaService {
     RecetaDto getReceta(Long idTurno);
 
     RecetaDto save(RecetaRequest receta);
+
+    void delete(Long id);
 }
