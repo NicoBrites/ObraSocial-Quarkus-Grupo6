@@ -32,7 +32,7 @@ public class RecetaServiceImpl  implements IRecetaService{
     @Inject
     private JsonWebToken jwt;
 
-    public RecetaDto getReceta(Long idTurno, String Authorization){
+    public RecetaDto getReceta(Long idTurno){
 
         Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(idTurno);
         if (turnoOpcional.isEmpty()) {

@@ -4,7 +4,7 @@ import quarkus.dto.RecetaRequest;
 
 public interface IRecetaService {
 
-    RecetaDto getReceta(Long idTurno, String authorizationHeader);
+    RecetaDto getReceta(Long idTurno);
 
     RecetaDto save(RecetaRequest receta);
 }

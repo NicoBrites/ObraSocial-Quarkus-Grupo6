@@ -49,8 +49,8 @@ public class RecetaController {
 				description = "Error interno del servidor")
 	            }
 	    )
-	public Response get(@PathParam("id")Long id, @HeaderParam("Authorization") String authorizationHeader) {
-        RecetaDto receta = recetaServiceImpl.getReceta(id, authorizationHeader);
+	public Response get(@PathParam("id")Long id) {
+        RecetaDto receta = recetaServiceImpl.getReceta(id);
 		return Response.status(Response.Status.OK).entity(receta).build();
 
     }
