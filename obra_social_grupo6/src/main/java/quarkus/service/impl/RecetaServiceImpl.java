@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import quarkus.dto.RecetaDto;
+import quarkus.dto.RecetaRequest;
 import quarkus.dto.mapper.RecetaMapper;
 import quarkus.entity.Turno;
 import quarkus.entity.Receta;
@@ -54,16 +55,21 @@ public class RecetaServiceImpl  implements IRecetaService{
  
     @Override
     @Transactional
-    public RecetaDto save(RecetaDto recetaDto) {
-        Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(recetaDto.turnoId());
+    public RecetaDto save(RecetaRequest recetaRequest) {
+        Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(recetaRequest.turnoId());
         if (turnoOpcional.isEmpty()) {
             throw new UserNotFoundException("Turno no encontrado");
         }
+        Optional<Receta> recetaOpcional = recetaRepository.findByIdTurno(recetaRequest.turnoId());
+        if (recetaOpcional.isPresent()) {
+            throw new RecetaException("Ese turno ya tiene una receta creada");
+        }
         Turno entityTurno = turnoOpcional.get(); 
 
-        LocalDate fechaValidez = LocalDate.now().plusDays(30);
+        LocalDate fechaCreacion = LocalDate.now();
+        LocalDate fechaValidez = fechaCreacion.plusDays(30);
 
-        Receta entityReceta = recetaMapper.DtoToEntity(recetaDto,entityTurno, fechaValidez );
+        Receta entityReceta = recetaMapper.RequestToEntity(recetaRequest, entityTurno, fechaCreacion, fechaValidez);
 
         recetaRepository.persist(entityReceta);
         return recetaMapper.EntityToDto(entityReceta);
