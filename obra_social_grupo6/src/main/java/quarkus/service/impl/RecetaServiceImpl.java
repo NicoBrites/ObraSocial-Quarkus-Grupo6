@@ -3,13 +3,13 @@ package quarkus.service.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import quarkus.dto.RecetaDto;
 import quarkus.dto.RecetaRequest;
 import quarkus.dto.mapper.RecetaMapper;
-import quarkus.entity.Turno;
 import quarkus.entity.Receta;
 import quarkus.exception.RecetaException;
-import quarkus.exception.UserNotFoundException;
+import quarkus.exception.TurnoException;
 import quarkus.repository.RecetaRepository;
 import quarkus.repository.TurnoRepository;
 import quarkus.service.IRecetaService;
@@ -33,19 +33,16 @@ public class RecetaServiceImpl  implements IRecetaService{
 
     @Override
     public RecetaDto getReceta(Long idTurno){
+        var turno = turnoRepository.findByIdOptional(idTurno)
+                .orElseThrow(() -> new NotFoundException("El id del Turno es incorrecto"));
 
-        Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(idTurno);
-        if (turnoOpcional.isEmpty()) {
-            throw new UserNotFoundException("Turno no encontrado");
-        }
-        Turno entity = turnoOpcional.get(); 
-
-        if (!entity.getPaciente().getUsername().toString().equals(jwt.getClaim("upn").toString()))  {
+        if (!turno.getPaciente().getUsername().toString().equals(jwt.getClaim("upn").toString()))  {
             throw new RecetaException("El id del turno no pertenece a tu Usuario");
         }
-        Optional<Receta> recetaOpcion = recetaRepository.findByIdTurno(idTurno);
 
-        Receta receta =  recetaOpcion.get();
+        var receta = recetaRepository.findByIdTurno(idTurno)
+                .orElseThrow(() -> new NotFoundException("El turno no tiene la receta cargada"));
+
         if (receta.getFechaValidez().isBefore(LocalDate.now())){
             throw new RecetaException("Ya se vencio la fecha de validez de la Receta");
         }
@@ -56,20 +53,18 @@ public class RecetaServiceImpl  implements IRecetaService{
     @Override
     @Transactional
     public RecetaDto save(RecetaRequest recetaRequest) {
-        Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(recetaRequest.turnoId());
-        if (turnoOpcional.isEmpty()) {
-            throw new UserNotFoundException("Turno no encontrado");
-        }
+        var turno = turnoRepository.findByIdOptional(recetaRequest.turnoId())
+                .orElseThrow(() -> new TurnoException("El id del Turno es incorrecto"));
+
         Optional<Receta> recetaOpcional = recetaRepository.findByIdTurno(recetaRequest.turnoId());
         if (recetaOpcional.isPresent()) {
-            throw new RecetaException("Ese turno ya tiene una receta creada");
-        }
-        Turno entityTurno = turnoOpcional.get(); 
+            throw new TurnoException("Ese turno ya tiene una receta creada");
+        } 
 
         LocalDate fechaCreacion = LocalDate.now();
         LocalDate fechaValidez = fechaCreacion.plusDays(30);
 
-        Receta entityReceta = recetaMapper.RequestToEntity(recetaRequest, entityTurno, fechaCreacion, fechaValidez);
+        Receta entityReceta = recetaMapper.RequestToEntity(recetaRequest, turno, fechaCreacion, fechaValidez);
         entityReceta.setEstaBorrado(false);
         
         recetaRepository.persist(entityReceta);
@@ -79,30 +74,26 @@ public class RecetaServiceImpl  implements IRecetaService{
     @Override
 	@Transactional
     public void delete(Long id) {		        
-        Optional<Receta> optional = Receta.findByIdOptional(id);
-        if (optional.isEmpty()) {
-            throw new RecetaException("Receta no encontrada");
-        }
-        Receta entity = optional.get();   
-        entity.setEstaBorrado(true);
-        recetaRepository.persist(entity);     
+        var receta =  recetaRepository.findByIdOptional(id)
+                .orElseThrow(() -> new NotFoundException("Receta no encontrada"));
+
+        receta.setEstaBorrado(true);
+        recetaRepository.persist(receta);
     }
 
     @Override
     @Transactional
     public RecetaDto update(RecetaDto recetaUpdate, Long id) {
-        Optional<Receta> optional = Receta.findByIdOptional(id);
-        if (optional.isEmpty()) { // valido que exista la receta
-            throw new RecetaException("Receta no encontrada");
-        }
-        Receta entityToUpdate = optional.get(); 
-        if (entityToUpdate.getEstaBorrado()){ // valido que no este borrada
+        var recetaToUpdate = recetaRepository.findByIdOptional(id)
+                .orElseThrow(() -> new RecetaException("Receta no encontrada"));
+
+        if (recetaToUpdate.getEstaBorrado()){ // valido que no este borrada
             throw new RecetaException("Receta no encontrada");
         }   
         Optional<Receta> recetaOpcional = recetaRepository.findByIdTurno(recetaUpdate.turnoId());
         if (recetaOpcional.isPresent()) {
 
-            Receta entity = optional.get(); 
+            Receta entity = recetaOpcional.get(); 
             if (entity.id != id) // valido que el idturno de la actualizacion de receta 
             {                    // coincida con el id turno de la receta a actualizar
             throw new RecetaException("Ese turno ya tiene una receta creada");
@@ -110,19 +101,19 @@ public class RecetaServiceImpl  implements IRecetaService{
         }     
        
         if (recetaUpdate.turnoId() != null) {
-            entityToUpdate.setTurno(recetaOpcional.get().getTurno());
+            recetaToUpdate.setTurno(recetaOpcional.get().getTurno());
         }
         if (recetaUpdate.receta() != null) {
-            entityToUpdate.setReceta(recetaUpdate.receta());
+            recetaToUpdate.setReceta(recetaUpdate.receta());
         }
         if (recetaUpdate.fechaCreacion() != null) {
-            entityToUpdate.setFechaCreacion(recetaUpdate.fechaCreacion());
+            recetaToUpdate.setFechaCreacion(recetaUpdate.fechaCreacion());
         }
         if (recetaUpdate.fechaValidez() != null) {
-            entityToUpdate.setFechaValidez(recetaUpdate.fechaValidez());
+            recetaToUpdate.setFechaValidez(recetaUpdate.fechaValidez());
         }
 
-        recetaRepository.persist(entityToUpdate);
-        return recetaMapper.EntityToDto(entityToUpdate);
+        recetaRepository.persist(recetaToUpdate);
+        return recetaMapper.EntityToDto(recetaToUpdate);
     }  
 }

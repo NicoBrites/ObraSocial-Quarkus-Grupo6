@@ -43,7 +43,7 @@ public class RecetaController {
                 description = "El id del turno no pertenece a tu Usuario o Ya se vencio la fecha de validez de la Receta"),
             @APIResponse(
                 responseCode = "404",
-                description = "Turno no encontrado"),
+                description = "El id del Turno es incorrecto o El turno no tiene la receta cargada"),
 			@APIResponse(
 				responseCode = "500",
 				description = "Error interno del servidor")
@@ -68,7 +68,7 @@ public class RecetaController {
 				schema = @Schema(type = SchemaType.ARRAY, implementation = RecetaRequest.class))),	
 			@APIResponse(
 				responseCode = "400",
-				description = "Error: Bad Request"),            
+				description = "El id del Turno es incorrecto o Ese turno ya tiene una receta creada"),
             @APIResponse(
                 responseCode = "500",
                 description = "Error interno del servidor")
