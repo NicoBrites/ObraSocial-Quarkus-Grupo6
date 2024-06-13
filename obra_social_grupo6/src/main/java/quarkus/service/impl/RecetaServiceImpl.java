@@ -3,12 +3,10 @@ package quarkus.service.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
 import quarkus.dto.RecetaDto;
 import quarkus.dto.RecetaRequest;
 import quarkus.dto.mapper.RecetaMapper;
 import quarkus.entity.Turno;
-import quarkus.entity.Especialista;
 import quarkus.entity.Receta;
 import quarkus.exception.RecetaException;
 import quarkus.exception.UserNotFoundException;
@@ -33,6 +31,7 @@ public class RecetaServiceImpl  implements IRecetaService{
     @Inject
     private JsonWebToken jwt;
 
+    @Override
     public RecetaDto getReceta(Long idTurno){
 
         Optional<Turno> turnoOpcional = turnoRepository.findByIdOptional(idTurno);
@@ -88,4 +87,42 @@ public class RecetaServiceImpl  implements IRecetaService{
         entity.setEstaBorrado(true);
         recetaRepository.persist(entity);     
     }
+
+    @Override
+    @Transactional
+    public RecetaDto update(RecetaDto recetaUpdate, Long id) {
+        Optional<Receta> optional = Receta.findByIdOptional(id);
+        if (optional.isEmpty()) { // valido que exista la receta
+            throw new RecetaException("Receta no encontrada");
+        }
+        Receta entityToUpdate = optional.get(); 
+        if (entityToUpdate.getEstaBorrado()){ // valido que no este borrada
+            throw new RecetaException("Receta no encontrada");
+        }   
+        Optional<Receta> recetaOpcional = recetaRepository.findByIdTurno(recetaUpdate.turnoId());
+        if (recetaOpcional.isPresent()) {
+
+            Receta entity = optional.get(); 
+            if (entity.id != id) // valido que el idturno de la actualizacion de receta 
+            {                    // coincida con el id turno de la receta a actualizar
+            throw new RecetaException("Ese turno ya tiene una receta creada");
+            }
+        }     
+       
+        if (recetaUpdate.turnoId() != null) {
+            entityToUpdate.setTurno(recetaOpcional.get().getTurno());
+        }
+        if (recetaUpdate.receta() != null) {
+            entityToUpdate.setReceta(recetaUpdate.receta());
+        }
+        if (recetaUpdate.fechaCreacion() != null) {
+            entityToUpdate.setFechaCreacion(recetaUpdate.fechaCreacion());
+        }
+        if (recetaUpdate.fechaValidez() != null) {
+            entityToUpdate.setFechaValidez(recetaUpdate.fechaValidez());
+        }
+
+        recetaRepository.persist(entityToUpdate);
+        return recetaMapper.EntityToDto(entityToUpdate);
+    }  
 }

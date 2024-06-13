@@ -28,4 +28,13 @@ public class RecetaMapper {
                 .build();
     }
 
+	public Receta DtoToEntity(RecetaDto recetaDto, Turno turno){
+        return Receta.builder()
+				.turno(turno)
+				.receta(recetaDto.receta())
+				.fechaCreacion(recetaDto.fechaCreacion())
+				.fechaValidez(recetaDto.fechaValidez())
+                .build();
+    }
+
 }
