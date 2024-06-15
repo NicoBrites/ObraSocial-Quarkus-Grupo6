@@ -28,7 +28,7 @@ public class ExceptionMappers {
         return Response.status(Response.Status.UNAUTHORIZED).entity(recetaException.getMessage()).build();
     }
     @ServerExceptionMapper
-    public Response handleRecetaException(RecetaNotFoundException recetaException) {
+    public Response handleRecetaNotFoundException(RecetaNotFoundException recetaException) {
         return Response.status(Response.Status.NOT_FOUND).entity(recetaException.getMessage()).build();
     }
 }
