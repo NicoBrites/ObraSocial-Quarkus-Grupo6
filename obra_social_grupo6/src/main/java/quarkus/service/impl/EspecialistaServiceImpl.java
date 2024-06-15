@@ -1,8 +1,8 @@
 package quarkus.service.impl;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 import java.util.Optional;
 
@@ -13,6 +13,7 @@ import quarkus.dto.EspecialistaDto;
 import quarkus.dto.EspecialistaRequest;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
+import quarkus.exception.TurnoException;
 import quarkus.exception.UserNotFoundException;
 import quarkus.repository.EspecialistaRepository;
 import quarkus.service.IEspecialistaService;
@@ -76,6 +77,8 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
             throw new UserNotFoundException("Especialista no encontrado");
         }
         
+        ValidarHorario(especialistaUpdate.horarioEntrada(), especialistaUpdate.horarioSalida());
+
         entityToUpdate.setNombre(especialistaUpdate.nombre());     
         entityToUpdate.setEspecialidad(especialistaUpdate.especialidad());
         entityToUpdate.setHorarioEntrada(especialistaUpdate.horarioEntrada());
@@ -86,4 +89,10 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
         return especialistaMapper.EntityToDto(entityToUpdate);
     }  
 
+    private void ValidarHorario(LocalTime horarioEntrada, LocalTime horarioSalida)
+    {
+        if (horarioEntrada.isAfter(horarioSalida)){
+            throw new TurnoException("El horario de Entrada no puede ser despues del horario de salida");
+        }
+    }
 }
