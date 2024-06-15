@@ -24,7 +24,6 @@ import quarkus.service.IEspecialistaService;
 
 
 @Path("/especialistas")
-
 public class EspecialistaController {
 
 	@Inject
@@ -119,7 +118,7 @@ public class EspecialistaController {
                 description = "Error interno del servidor")
 		}
     )
-	public Response update(@Valid EspecialistaDto especialistaRequest, @PathParam("id") Long id){
+	public Response update(@Valid EspecialistaRequest especialistaRequest, @PathParam("id") Long id){
 
 		return Response.status(Response.Status.CREATED)
 			.entity(especialistaServiceImpl.update(especialistaRequest, id)).build();
