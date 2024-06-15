@@ -3,11 +3,10 @@ package quarkus.dto;
 import java.time.LocalDate;
 
 public record RecetaDto(
-    Long codigoTurno,
-    String nombreMedico,
-    String especiliadad,
+    Long turnoId,
     String receta,
-    LocalDate fechaCreacion
+    LocalDate fechaCreacion,
+    LocalDate fechaValidez
 ) {
 
 }
