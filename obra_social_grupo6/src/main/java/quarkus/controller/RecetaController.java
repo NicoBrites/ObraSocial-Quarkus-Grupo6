@@ -55,8 +55,8 @@ public class RecetaController {
 	public Response get(@Parameter(
 		description = "ID del Turno de la receta",
 		required = true,
-		example = "1"
-		)@PathParam("id")Long id) {
+		example = "1")@PathParam("id")Long id) {
+
         RecetaDto receta = recetaServiceImpl.getReceta(id);
 		return Response.status(Response.Status.OK).entity(receta).build();
 
@@ -105,8 +105,8 @@ public class RecetaController {
 	public Response delete(@Parameter(
 		description = "ID de la receta a borrar",
 		required = true,
-		example = "1"
-		)@PathParam("id") Long id){
+		example = "1")@PathParam("id") Long id){
+
 		recetaServiceImpl.delete(id);
 		return Response.ok().build();
 	}
@@ -140,8 +140,8 @@ public class RecetaController {
 	public Response update(@Valid RecetaRequestUpdate recetaRequest, @Parameter(
 		description = "ID de la receta a editar",
 		required = true,
-		example = "1"
-		)@PathParam("id") Long id){
+		example = "1")@PathParam("id") Long id){
+			
 		return Response.status(Response.Status.CREATED)
 			.entity(recetaServiceImpl.update(recetaRequest, id)).build();
 	}
