@@ -1,6 +1,7 @@
 package quarkus.service;
 import quarkus.dto.RecetaDto;
 import quarkus.dto.RecetaRequest;
+import quarkus.dto.RecetaRequestUpdate;
 
 public interface IRecetaService {
 
@@ -10,5 +11,5 @@ public interface IRecetaService {
 
     void delete(Long id);
 
-    RecetaDto update(RecetaDto recetaDto, Long id);
+    RecetaDto update(RecetaRequestUpdate recetaUpdate, Long id);
 }
