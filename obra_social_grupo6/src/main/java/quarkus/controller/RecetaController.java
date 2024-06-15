@@ -103,7 +103,7 @@ public class RecetaController {
         }
     )
 	public Response delete(@Parameter(
-		description = "ID del Turno de la receta a borrar",
+		description = "ID de la receta a borrar",
 		required = true,
 		example = "1"
 		)@PathParam("id") Long id){
@@ -138,7 +138,7 @@ public class RecetaController {
 		}
     )
 	public Response update(@Valid RecetaRequestUpdate recetaRequest, @Parameter(
-		description = "ID del Turno de la receta a editar",
+		description = "ID de la receta a editar",
 		required = true,
 		example = "1"
 		)@PathParam("id") Long id){
