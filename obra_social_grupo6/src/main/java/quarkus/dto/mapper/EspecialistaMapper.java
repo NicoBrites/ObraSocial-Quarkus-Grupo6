@@ -7,9 +7,8 @@ import quarkus.entity.Especialista;
 
 
 @RequestScoped
-public class EspecialistaMapper implements IEspecialistaMapper {
+public class EspecialistaMapper {
 
-	@Override
 	public EspecialistaDto EntityToDto(Especialista especialista) {			
 		return new EspecialistaDto(especialista.getNombre(),
 				especialista.getEspecialidad(),
@@ -18,7 +17,6 @@ public class EspecialistaMapper implements IEspecialistaMapper {
 				especialista.getUbicacion()); 
 	}
 	
-	@Override
 	public Especialista RequestToEntity(EspecialistaRequest especialistaRequest){
         return Especialista.builder()
 				.nombre(especialistaRequest.nombre())
@@ -28,18 +26,5 @@ public class EspecialistaMapper implements IEspecialistaMapper {
                 .ubicacion(especialistaRequest.ubicacion())
                 .build();
     }
-
-	@Override
-	public Especialista DtoToEntity(EspecialistaDto especialistaDto){
-        return Especialista.builder()
-				.nombre(especialistaDto.nombre())
-                .especialidad(especialistaDto.especialidad())
-                .horarioEntrada(especialistaDto.horarioEntrada())
-                .horarioSalida(especialistaDto.horarioSalida())
-                .ubicacion(especialistaDto.ubicacion())
-                .build();
-    }
-
-
 }
 

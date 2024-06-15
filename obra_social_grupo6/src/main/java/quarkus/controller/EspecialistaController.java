@@ -5,6 +5,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.parameters.*;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -24,7 +25,6 @@ import quarkus.service.IEspecialistaService;
 
 
 @Path("/especialistas")
-
 public class EspecialistaController {
 
 	@Inject
@@ -66,7 +66,11 @@ public class EspecialistaController {
                 description = "Error interno del servidor")
         }
     )
-	public Response delete(@PathParam("id") Long id){
+	public Response delete(@Parameter(
+		description = "ID del especialista a borrar",
+		required = true,
+		example = "1"
+		)@PathParam("id") Long id){
 		especialistaServiceImpl.delete(id);
 		return Response.ok().build();
 	}
@@ -119,7 +123,11 @@ public class EspecialistaController {
                 description = "Error interno del servidor")
 		}
     )
-	public Response update(@Valid EspecialistaDto especialistaRequest, @PathParam("id") Long id){
+	public Response update(@Valid EspecialistaRequest especialistaRequest, @Parameter(
+		description = "ID del especialiasta a actualizar",
+		required = true,
+		example = "1"
+		)@PathParam("id") Long id){
 
 		return Response.status(Response.Status.CREATED)
 			.entity(especialistaServiceImpl.update(especialistaRequest, id)).build();

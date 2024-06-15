@@ -1,8 +1,8 @@
 package quarkus.service.impl;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 import java.util.Optional;
 
@@ -13,6 +13,7 @@ import quarkus.dto.EspecialistaDto;
 import quarkus.dto.EspecialistaRequest;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
+import quarkus.exception.TurnoException;
 import quarkus.exception.UserNotFoundException;
 import quarkus.repository.EspecialistaRepository;
 import quarkus.service.IEspecialistaService;
@@ -40,12 +41,14 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
 
 	@Override
 	@Transactional
-    public void delete(Long id) {		        
+    public void delete(Long id) {	
+
         Optional<Especialista> optional = Especialista.findByIdOptional(id);
         if (optional.isEmpty()) {
             throw new UserNotFoundException("Especialista no encontrado");
         }
         Especialista entity = optional.get();   
+
         entity.setEstaBorrado(true);
         especialistaRepository.persist(entity);     
     }
@@ -53,15 +56,18 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
     @Override
     @Transactional
     public EspecialistaDto save(EspecialistaRequest especialistaRequest) {
+
         Especialista entity = especialistaMapper.RequestToEntity(especialistaRequest);
         entity.setEstaBorrado(false);
+
         especialistaRepository.persist(entity);
         return especialistaMapper.EntityToDto(entity);
     }
 
     @Override
     @Transactional
-    public EspecialistaDto update(EspecialistaDto especialistaUpdate, Long id) {
+    public EspecialistaDto update(EspecialistaRequest especialistaUpdate, Long id) {
+        
         Optional<Especialista> optional = Especialista.findByIdOptional(id);
         if (optional.isEmpty()) {
             throw new UserNotFoundException("Especialista no encontrado");
@@ -70,27 +76,23 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
         if (entityToUpdate.getEstaBorrado()){
             throw new UserNotFoundException("Especialista no encontrado");
         }
-        Especialista updatedEntity = especialistaMapper.DtoToEntity(especialistaUpdate);
+        
+        ValidarHorario(especialistaUpdate.horarioEntrada(), especialistaUpdate.horarioSalida());
 
-
-        if (updatedEntity.getNombre() != null) {
-            entityToUpdate.setNombre(updatedEntity.getNombre());
-        }
-        if (updatedEntity.getEspecialidad() != null) {
-            entityToUpdate.setEspecialidad(updatedEntity.getEspecialidad());
-        }
-        if (updatedEntity.getHorarioEntrada() != null) {
-            entityToUpdate.setHorarioEntrada(updatedEntity.getHorarioEntrada());
-        }
-        if (updatedEntity.getHorarioSalida() != null) {
-            entityToUpdate.setHorarioSalida(updatedEntity.getHorarioSalida());
-        }
-        if (updatedEntity.getUbicacion() != null) {
-            entityToUpdate.setUbicacion(updatedEntity.getUbicacion());
-        }
+        entityToUpdate.setNombre(especialistaUpdate.nombre());     
+        entityToUpdate.setEspecialidad(especialistaUpdate.especialidad());
+        entityToUpdate.setHorarioEntrada(especialistaUpdate.horarioEntrada());
+        entityToUpdate.setHorarioSalida(especialistaUpdate.horarioSalida());  
+        entityToUpdate.setUbicacion(especialistaUpdate.ubicacion());    
 
         especialistaRepository.persist(entityToUpdate);
         return especialistaMapper.EntityToDto(entityToUpdate);
     }  
 
+    private void ValidarHorario(LocalTime horarioEntrada, LocalTime horarioSalida)
+    {
+        if (horarioEntrada.isAfter(horarioSalida)){
+            throw new TurnoException("El horario de Entrada no puede ser despues del horario de salida");
+        }
+    }
 }
