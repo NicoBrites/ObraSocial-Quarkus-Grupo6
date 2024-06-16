@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import quarkus.dto.EspecialistaRequest;
 import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
 import quarkus.entity.Ubicacion;
+import quarkus.exception.UserNotFoundException;
 import quarkus.repository.EspecialistaRepository;
 import quarkus.service.impl.EspecialistaServiceImpl;
 
@@ -115,6 +117,19 @@ public class EspecialistaServiceTest {
         verify(especialistaRepository).persist(especialistaEntity);
 
         assertTrue(especialistaEntity.getEstaBorrado());
+               
+	}
+
+    @Test
+	public void DeleteTestReturnEspecialistaNoEncontrado() {
+		//arrange
+        //act
+        Exception exception = assertThrows(UserNotFoundException.class, () -> {
+            especialistaServiceImpl.delete(randomNumber);
+        });
+
+        //assert
+        assertEquals("Especialista no encontrado", exception.getMessage()); 
                
 	}
 }
