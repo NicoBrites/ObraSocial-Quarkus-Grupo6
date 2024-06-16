@@ -28,6 +28,7 @@ public class ExceptionMappers {
         return Response.status(Response.Status.UNAUTHORIZED).entity(recetaException.getMessage()).build();
     }
 
+    @ServerExceptionMapper
     public Response handleUnauthorizedException(UnauthorizedException unauthorizedException) {
         return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorizedException.getMessage()).build();
     }
