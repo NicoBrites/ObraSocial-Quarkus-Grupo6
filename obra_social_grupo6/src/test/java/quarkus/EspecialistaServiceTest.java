@@ -132,4 +132,29 @@ public class EspecialistaServiceTest {
         assertEquals("Especialista no encontrado", exception.getMessage()); 
                
 	}
+
+    @Test
+    public void UpdateTest() {
+       //arrange
+       especialistaEntity.setEstaBorrado(false);
+              
+       Especialista expectedEspecialista = especialistaEntity;
+       Optional<Especialista> optionalEspecialista = Optional.of(expectedEspecialista);
+       
+       EspecialistaDto expectedDto = especialistaDto;
+       EspecialistaRequest especialistaRequest = especialistaUpdate;
+       
+       when(especialistaRepository.findByIdOptional(randomNumber)).thenReturn(optionalEspecialista);
+       
+       when(especialistaMapper.EntityToDto(expectedEspecialista)).thenReturn(expectedDto);
+
+       //act
+       EspecialistaDto actualDto = especialistaServiceImpl.update(especialistaRequest, randomNumber);
+       
+       //assert
+       verify(especialistaRepository).persist(expectedEspecialista);
+       
+       assertEquals(expectedDto, actualDto);
+       
+   }
 }
