@@ -169,4 +169,16 @@ public class EspecialistaServiceTest {
 
         verify(especialistaRepository, never()).persist(any(Especialista.class));
     }
+
+    @Test
+    public void testUpdate_whenEspecialistaEstaBorrado() {
+        //arrange
+        especialistaEntity.setEstaBorrado(true);
+        
+        when(especialistaRepository.findByIdOptional(randomNumber)).thenReturn(Optional.of(especialistaEntity));
+        //act y assert
+        assertThrows(UserNotFoundException.class, () -> especialistaServiceImpl.update(especialistaUpdate, randomNumber));
+
+        verify(especialistaRepository, never()).persist(any(Especialista.class));
+    }
 }
