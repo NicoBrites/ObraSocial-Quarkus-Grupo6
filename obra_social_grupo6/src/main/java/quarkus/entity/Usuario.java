@@ -16,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario extends PanacheEntity {
-	
+
+
 	@Username 
 	private String username;
 	@Password 
@@ -30,5 +31,13 @@ public class Usuario extends PanacheEntity {
 	private List<Turno> turnos;
     @Roles
     private String rol;
+
+	public Long getId () {
+		return this.id;
+	}
+
+	public void setId (Long id) {
+		this.id = id;
+	}
     
 }
