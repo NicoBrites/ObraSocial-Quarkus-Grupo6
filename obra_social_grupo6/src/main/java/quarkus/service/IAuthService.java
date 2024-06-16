@@ -7,7 +7,7 @@ import quarkus.entity.Usuario;
 public interface IAuthService {
     Usuario register (RegisterRequest RegisterRequest);
 
-    String generateJwt(String username);
+    String generateJwt(Usuario usuario);
 
     boolean userExiste(String username);
 

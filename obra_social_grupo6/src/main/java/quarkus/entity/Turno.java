@@ -31,4 +31,12 @@ public class Turno extends PanacheEntity {
 	private String motivoConsulta;
 	
 	private Boolean estado ;
+
+	public Long getId () {
+		return this.id;
+	}
+
+	public void setId (Long id) {
+		this.id = id;
+	}
 }

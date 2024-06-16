@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record TurnoRequest(
+
         @NotNull
         Long pacienteId,
         @NotNull
@@ -17,6 +18,5 @@ public record TurnoRequest(
         LocalTime hora,
         @NotEmpty
         String motivoConsulta
-
         ) {
 }

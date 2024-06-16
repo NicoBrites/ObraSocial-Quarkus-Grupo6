@@ -1,11 +1,9 @@
 package quarkus.service.impl;
 
 import io.quarkus.security.UnauthorizedException;
-import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.SecurityContext;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import quarkus.dto.TurnoDto;
 import quarkus.dto.TurnoRequest;
@@ -21,7 +19,6 @@ import quarkus.service.IUsuarioService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @ApplicationScoped
 public class TurnoServiceImpl implements ITurnoService {
@@ -37,8 +34,6 @@ public class TurnoServiceImpl implements ITurnoService {
 
     @Inject
     private JsonWebToken jwt;
-
-
 
 
     @Override
@@ -101,7 +96,7 @@ public class TurnoServiceImpl implements ITurnoService {
 
     @Override
     @Transactional
-    public TurnoRequest updateTurno(TurnoRequest turnoRequest, Long id) {
+    public TurnoDto updateTurno(TurnoRequest turnoRequest, Long id) {
 
 
         var turno = turnoRepository.findByIdOptional(id)
@@ -120,7 +115,7 @@ public class TurnoServiceImpl implements ITurnoService {
         turno.setMotivoConsulta(turnoRequest.motivoConsulta());
         turno.setEspecialista(especialista);
         turnoRepository.persist(turno);
-        return turnoRequest;
+        return TurnoMapper.EntityToDto(turno);
     }
 
 
