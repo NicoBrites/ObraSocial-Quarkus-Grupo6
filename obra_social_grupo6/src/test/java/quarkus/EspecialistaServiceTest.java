@@ -7,6 +7,8 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -157,4 +159,14 @@ public class EspecialistaServiceTest {
        assertEquals(expectedDto, actualDto);
        
    }
+
+   @Test
+    public void UpdateTest_WhenEspecialistaNoExiste() {
+    	//arrange     
+        when(especialistaRepository.findByIdOptional(randomNumber)).thenReturn(Optional.empty());
+        //act y assert
+        assertThrows(UserNotFoundException.class, () -> especialistaServiceImpl.update(especialistaUpdate, randomNumber));
+
+        verify(especialistaRepository, never()).persist(any(Especialista.class));
+    }
 }
