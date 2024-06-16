@@ -57,4 +57,14 @@ public class EspecialistaServiceTest {
         assertEquals(expectedEspecialista, actualEspecialista);
        
     }
+    
+    @Test
+    public void GetByIdTestReturnOptionalEmpty() {
+		//arrange
+		//act	
+		Optional<Especialista> actualEspecialista = especialistaServiceImpl.getByID(randomNumber);
+		//assert
+	    assertEquals(Optional.empty(), actualEspecialista);
+       
+    }
 }
