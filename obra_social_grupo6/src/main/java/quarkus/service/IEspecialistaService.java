@@ -18,6 +18,6 @@ public interface IEspecialistaService {
 
 	EspecialistaDto save(EspecialistaRequest especialista);
 
-	EspecialistaDto update(EspecialistaDto especialista, Long id);
+	EspecialistaDto update(EspecialistaRequest especialista, Long id);
 
 }
