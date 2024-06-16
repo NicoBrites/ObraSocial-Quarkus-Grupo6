@@ -72,7 +72,7 @@ public class RecetaController {
 				responseCode = "201",
 				description = "Crea una receta",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = RecetaRequest.class))),	
+				schema = @Schema(type = SchemaType.ARRAY, implementation = RecetaRequest.class))),
 			@APIResponse(
 				responseCode = "400",
 				description = "El id del Turno es incorrecto o Ese turno ya tiene una receta creada"),
@@ -122,7 +122,7 @@ public class RecetaController {
 				responseCode = "201",
 				description = "Modifica una receta",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = RecetaRequest.class))),	
+				schema = @Schema(type = SchemaType.ARRAY, implementation = RecetaRequest.class))),
 			@APIResponse(
 				responseCode = "400",
 				description = "Error: Bad Request"), 
@@ -131,7 +131,7 @@ public class RecetaController {
 				description = "Receta no encontrada"),     
 			@APIResponse(
 				responseCode = "409",
-				description = "El id de turno que envio ya tiene una receta creada"),          
+				description = "El id de turno que envio ya tiene una receta creada"),
             @APIResponse(
                 responseCode = "500",
                 description = "Error interno del servidor")

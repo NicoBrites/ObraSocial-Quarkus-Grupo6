@@ -85,7 +85,7 @@ public class EspecialistaController {
 				responseCode = "201",
 				description = "Crea un especialista",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),	
+				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),
 			@APIResponse(
 				responseCode = "400",
 				description = "Error: Bad Request"),            
@@ -111,7 +111,7 @@ public class EspecialistaController {
 				responseCode = "201",
 				description = "Modifica un especialista",
 				content = @Content(mediaType = "application/json",
-				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),	
+				schema = @Schema(type = SchemaType.ARRAY, implementation = EspecialistaDto.class))),
 			@APIResponse(
 				responseCode = "400",
 				description = "Error: Bad Request"), 
