@@ -43,7 +43,7 @@ public class EspecialistaServiceImpl implements IEspecialistaService {
 	@Transactional
     public void delete(Long id) {	
 
-        Optional<Especialista> optional = Especialista.findByIdOptional(id);
+        Optional<Especialista> optional = especialistaRepository.findByIdOptional(id);
         if (optional.isEmpty()) {
             throw new UserNotFoundException("Especialista no encontrado");
         }

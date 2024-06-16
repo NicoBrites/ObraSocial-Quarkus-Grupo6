@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -100,5 +101,20 @@ public class EspecialistaServiceTest {
         
         assertEquals(expectedDto, actualDto);
 		
+	}
+
+    @Test
+	public void DeleteTest() {
+        //arrange
+        when(especialistaRepository.findByIdOptional(randomNumber)).thenReturn(Optional.of(especialistaEntity));
+
+        //act
+        especialistaServiceImpl.delete(randomNumber);
+
+        //assert
+        verify(especialistaRepository).persist(especialistaEntity);
+
+        assertTrue(especialistaEntity.getEstaBorrado());
+               
 	}
 }
