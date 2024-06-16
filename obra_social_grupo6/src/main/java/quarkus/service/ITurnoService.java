@@ -13,7 +13,7 @@ public interface ITurnoService {
 
     void validarFechaYHora(Especialista especialista, Usuario paciente, TurnoRequest turnoRequest);
 
-    TurnoRequest updateTurno(TurnoRequest TurnoRequest, Long id);
+    TurnoDto updateTurno(TurnoRequest TurnoRequest, Long id);
 
     List<TurnoDto> getAllByUserId(Long id);
 

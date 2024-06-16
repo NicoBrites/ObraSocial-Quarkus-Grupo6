@@ -1,7 +1,7 @@
 package quarkus.exception;
 
+import io.quarkus.security.UnauthorizedException;
 import jakarta.ws.rs.core.Response;
-import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 public class ExceptionMappers {
@@ -27,6 +27,12 @@ public class ExceptionMappers {
     public Response handleRecetaException(RecetaException recetaException) {
         return Response.status(Response.Status.UNAUTHORIZED).entity(recetaException.getMessage()).build();
     }
+
+    @ServerExceptionMapper
+    public Response handleUnauthorizedException(UnauthorizedException unauthorizedException) {
+        return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorizedException.getMessage()).build();
+    }
+
     @ServerExceptionMapper
     public Response handleRecetaNotFoundException(RecetaNotFoundException recetaException) {
         return Response.status(Response.Status.NOT_FOUND).entity(recetaException.getMessage()).build();
