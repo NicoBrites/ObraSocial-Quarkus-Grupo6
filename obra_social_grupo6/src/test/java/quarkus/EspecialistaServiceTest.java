@@ -1,9 +1,11 @@
 package quarkus;
 
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +15,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import io.quarkus.test.junit.QuarkusTest;
+import quarkus.dto.EspecialistaDto;
+import quarkus.dto.EspecialistaRequest;
+import quarkus.dto.mapper.EspecialistaMapper;
 import quarkus.entity.Especialista;
+import quarkus.entity.Ubicacion;
 import quarkus.repository.EspecialistaRepository;
 import quarkus.service.impl.EspecialistaServiceImpl;
 
@@ -28,8 +34,13 @@ public class EspecialistaServiceTest {
 	
 	@Mock 
 	private EspecialistaRepository especialistaRepository;
+
+    @Mock 
+	private EspecialistaMapper especialistaMapper;
     
     Especialista especialistaEntity;
+    EspecialistaRequest especialistaUpdate;
+	EspecialistaDto especialistaDto;
 	
 	private long randomNumber;
 
@@ -38,6 +49,8 @@ public class EspecialistaServiceTest {
         MockitoAnnotations.openMocks(this); 
         
         especialistaEntity = new Especialista();
+        especialistaUpdate = new EspecialistaRequest("Carlos", "Cardiologo", LocalTime.of(9, 0), LocalTime.of(17, 0), new Ubicacion());
+        especialistaDto = new EspecialistaDto("Carlos", "Cardiologo", LocalTime.of(9, 0), LocalTime.of(17, 0), new Ubicacion());
         
         Random random = new Random();
 	    randomNumber = random.nextLong(1001);
@@ -57,7 +70,7 @@ public class EspecialistaServiceTest {
         assertEquals(expectedEspecialista, actualEspecialista);
        
     }
-    
+
     @Test
     public void GetByIdTestReturnOptionalEmpty() {
 		//arrange
@@ -67,4 +80,25 @@ public class EspecialistaServiceTest {
 	    assertEquals(Optional.empty(), actualEspecialista);
        
     }
+
+    @Test
+	public void SaveTest() {				
+		//arrange
+        EspecialistaRequest especialistaRequest = especialistaUpdate;
+        Especialista expectedEntity = especialistaEntity;
+        EspecialistaDto expectedDto = especialistaDto;
+        
+        when(especialistaMapper.RequestToEntity(especialistaRequest)).thenReturn(expectedEntity);
+        
+        when(especialistaMapper.EntityToDto(expectedEntity)).thenReturn(expectedDto);
+
+        //act
+        EspecialistaDto actualDto = especialistaServiceImpl.save(especialistaRequest);
+
+        //assert
+        verify(especialistaRepository).persist(expectedEntity);
+        
+        assertEquals(expectedDto, actualDto);
+		
+	}
 }
