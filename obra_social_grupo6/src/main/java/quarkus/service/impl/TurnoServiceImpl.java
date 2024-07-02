@@ -40,8 +40,9 @@ public class TurnoServiceImpl implements ITurnoService {
     @Transactional
     public TurnoDto createTurno(TurnoRequest turnoRequest) {
 
-        var paciente = usuarioService.findById(turnoRequest.pacienteId())
+        var paciente = usuarioService.findByUsername(jwt.getClaim("upn").toString())
                 .orElseThrow(() -> new UserNotFoundException("Paciente no encontrado"));
+
         Especialista especialista = especialistaService.getByID(turnoRequest.especialistaId())
                 .orElseThrow( ()-> new UserNotFoundException("No se encontro especialista"));
 
