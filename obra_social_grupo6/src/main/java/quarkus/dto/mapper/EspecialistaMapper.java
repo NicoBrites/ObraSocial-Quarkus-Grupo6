@@ -10,7 +10,9 @@ import quarkus.entity.Especialista;
 public class EspecialistaMapper {
 
 	public EspecialistaDto EntityToDto(Especialista especialista) {			
-		return new EspecialistaDto(especialista.getNombre(),
+		return new EspecialistaDto(
+				especialista.id,
+				especialista.getNombre(),
 				especialista.getEspecialidad(),
 				especialista.getHorarioEntrada(),
 				especialista.getHorarioSalida(),
