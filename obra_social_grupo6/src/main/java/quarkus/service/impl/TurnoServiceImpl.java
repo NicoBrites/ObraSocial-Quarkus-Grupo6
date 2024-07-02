@@ -122,14 +122,14 @@ public class TurnoServiceImpl implements ITurnoService {
 
 
     @Override
-    public List<TurnoDto> getAllByUserId(Long id) {
+    public List<TurnoDto> getAllByUser() {
 
-        var paciente = usuarioService.findById(id)
+        var paciente = usuarioService.findByUsername(jwt.getClaim("upn").toString())
                 .orElseThrow(() -> new UserNotFoundException("Paciente no encontrado"));
 
         ValidarUsuarioEstaAutorizado(paciente);
 
-        return turnoRepository.findAllByUserId(id).stream().map(TurnoMapper::EntityToDto).toList();
+        return turnoRepository.findAllByUserId(paciente.getId()).stream().map(TurnoMapper::EntityToDto).toList();
 
     }
 
