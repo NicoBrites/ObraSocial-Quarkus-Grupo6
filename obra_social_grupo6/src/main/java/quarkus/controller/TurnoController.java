@@ -28,7 +28,7 @@ public class TurnoController {
 
         @GET
         @Produces("application/json")
-        @RolesAllowed("ADMIN")
+        @RolesAllowed({ "PACIENTE", "ADMIN" })
         @APIResponses(value = {
                         @APIResponse(responseCode = "200", description = "Turnos encontrados correctamente", content = @Content(mediaType = "application/json", schema = @Schema(type = SchemaType.ARRAY, implementation = TurnoDto.class)))
         })
