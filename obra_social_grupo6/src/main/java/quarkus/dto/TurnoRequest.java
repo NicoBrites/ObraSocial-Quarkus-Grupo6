@@ -9,8 +9,6 @@ import java.time.LocalTime;
 public record TurnoRequest(
 
         @NotNull
-        Long pacienteId,
-        @NotNull
         Long especialistaId,
         @NotNull
         LocalDate fecha,

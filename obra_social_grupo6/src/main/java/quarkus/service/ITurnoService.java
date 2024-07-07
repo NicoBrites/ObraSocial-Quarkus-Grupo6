@@ -15,7 +15,7 @@ public interface ITurnoService {
 
     TurnoDto updateTurno(TurnoRequest TurnoRequest, Long id);
 
-    List<TurnoDto> getAllByUserId(Long id);
+    List<TurnoDto> getAllByUser();
 
     void deleteTurno(Long id);
 }
